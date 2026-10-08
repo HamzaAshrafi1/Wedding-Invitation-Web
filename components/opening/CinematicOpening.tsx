@@ -40,7 +40,11 @@ export default function CinematicOpening({ children }: { children: ReactNode }) 
     }
   }, [phase]);
 
-  const begin = () => { if (phase === "waiting") setPhase("opening"); };
+  const begin = () => {
+    if (phase !== "waiting") return;
+    window.dispatchEvent(new Event("wedding:begin"));
+    setPhase("opening");
+   };
 
   return <div className="invitation-experience" data-phase={phase}>
     <AmbientBackground />

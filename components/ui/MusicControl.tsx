@@ -7,7 +7,28 @@ export default function MusicControl({ src }: { src: string }) {
   const messageTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [playing, setPlaying] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
-  useEffect(() => () => { if (messageTimer.current) clearTimeout(messageTimer.current); }, []);
+
+
+  useEffect(() => {
+    const startMusic = () => {
+      const audio = audioRef.current;
+      if (!audio || !audio.paused) return;
+
+      audio.volume = 0.35;
+
+      audio.play()
+        .then(() => setUnavailable(false))
+        .catch(() => showUnavailable());
+    };
+
+    window.addEventListener("wedding:begin", startMusic);
+
+    return () => {
+      window.removeEventListener("wedding:begin", startMusic);
+    };
+  }, []);
+
+
   const showUnavailable = () => {
     setPlaying(false); setUnavailable(true);
     if (messageTimer.current) clearTimeout(messageTimer.current);
