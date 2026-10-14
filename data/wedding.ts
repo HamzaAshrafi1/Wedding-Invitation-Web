@@ -69,6 +69,6 @@ export const wedding = {
 
     music: {
         enabled: true,
-        src: "/audio/chubina.mp3",
+        src: "/audio/weddingsong.mp3",
     },
 } as const
